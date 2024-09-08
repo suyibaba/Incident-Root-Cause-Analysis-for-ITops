@@ -1,0 +1,30 @@
+import pandas as pd
+import os
+import tensorflow as tf
+
+symptom_data = pd.read_csv("root_cause_analysis.csv")
+
+print(symptom_data.dtypes)
+symptom_data.head()
+
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+
+label_encoder = preprocessing.LabelEncoder()
+symptom_data['ROOT_CAUSE'] = label_encoder.fit_transform(symptom_data['ROOT_CAUSE'])
+
+#Converted Pandas DataFrame to a numpy vector
+np_symptom = symptom_data.to_numpy().astype(float)
+
+#Extracted the feature variables (X)
+X_data = np_symptom[:,1:8]
+
+#Extracted the target variable (Y), conver to one-hot-encodign
+Y_data=np_symptom[:,8]
+Y_data = tf.keras.utils.to_categorical(Y_data,3)
+
+#Splitted training and test data
+X_train,X_test,Y_train,Y_test = train_test_split( X_data, Y_data, test_size=0.10)
+
+print("Shape of feature variables :", X_train.shape)
+print("Shape of target variable :",Y_train.shape)

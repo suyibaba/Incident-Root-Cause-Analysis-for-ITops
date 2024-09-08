@@ -1,0 +1,25 @@
+import numpy as np
+
+CPU_LOAD=1
+MEMORY_LOAD=0
+DELAY=0
+ERROR_1000=0
+ERROR_1001=1
+ERROR_1002=1
+ERROR_1003=0
+
+prediction=np.argmax(model.predict(
+    [[CPU_LOAD,MEMORY_LOAD,DELAY,
+      ERROR_1000,ERROR_1001,ERROR_1002,ERROR_1003]]), axis=1 )
+
+print(label_encoder.inverse_transform(prediction))
+
+
+
+#Predicting as a Batch
+print(label_encoder.inverse_transform(np.argmax(
+        model.predict([[1,0,0,0,1,1,0],
+                                [0,1,1,1,0,0,0],
+                                [1,1,0,1,1,0,1],
+                                [0,0,0,0,0,1,0],
+                                [1,0,1,0,1,1,1]]), axis=1 )))

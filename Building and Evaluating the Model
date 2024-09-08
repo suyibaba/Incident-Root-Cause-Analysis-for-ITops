@@ -1,0 +1,50 @@
+from tensorflow import keras
+from tensorflow.keras import optimizers
+from tensorflow.keras.regularizers import l2
+
+#Setup Training Parameters
+EPOCHS=20
+BATCH_SIZE=64
+VERBOSE=1
+OUTPUT_CLASSES=len(label_encoder.classes_)
+N_HIDDEN=128
+VALIDATION_SPLIT=0.2
+
+#Created a Keras sequential model
+model = tf.keras.models.Sequential()
+#Added a Dense Layer
+model.add(keras.layers.Dense(N_HIDDEN,
+                             input_shape=(7,),
+                              name='Dense-Layer-1',
+                              activation='relu'))
+
+#Added a second dense layer
+model.add(keras.layers.Dense(N_HIDDEN,
+                              name='Dense-Layer-2',
+                              activation='relu'))
+
+#Added a softmax layer for categorial prediction
+model.add(keras.layers.Dense(OUTPUT_CLASSES,
+                             name='Final',
+                             activation='softmax'))
+
+#Compiled the model
+model.compile(
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+
+model.summary()
+
+#Built the model
+model.fit(X_train,
+          Y_train,
+          batch_size=BATCH_SIZE,
+          epochs=EPOCHS,
+          verbose=VERBOSE,
+          validation_split=VALIDATION_SPLIT)
+
+
+#Evaluated the model against the test dataset and print results
+print("\nEvaluation against Test Dataset :\n------------------------------------")
+model.evaluate(X_test,Y_test)
